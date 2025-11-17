@@ -1,16 +1,35 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Calendar, Clock, MapPin, Award, Star, Filter, Search, CheckCircle } from 'lucide-react';
-import { MOCK_PAST_EVENTS, EVENT_CATEGORIES } from '@/lib/services/getDataseService';
-import type { PastEvent } from '@/lib/types';
+import { EVENT_CATEGORIES } from '@/lib/services/getDataseService';
+import type { PastEvent, UserStatsDTO } from '@/lib/types';
 
-const PastEvents: React.FC = () => {
+interface PastEventsProps {
+  dashboardData: UserStatsDTO;
+}
+
+const PastEvents: React.FC<PastEventsProps> = ({ dashboardData }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('recent');
 
-  const pastEvents: PastEvent[] = MOCK_PAST_EVENTS;
+  const pastEvents = useMemo(() => {
+    return dashboardData.eventosPassados.map(event => ({
+      id: event.id,
+      title: event.titulo,
+      organization: 'Organização',
+      date: new Date(event.inicio).toLocaleDateString('pt-BR'),
+      location: 'São Paulo, SP',
+      hours: event.horasVoluntariadas,
+      category: 'Voluntariado',
+      rating: 5,
+      certificateAvailable: true,
+      description: event.titulo,
+      role: 'Voluntário'
+    } as PastEvent));
+  }, [dashboardData]);
+
   const categories = EVENT_CATEGORIES;
 
   const filteredEvents = pastEvents

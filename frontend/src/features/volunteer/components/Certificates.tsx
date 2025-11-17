@@ -1,13 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Award, Download, Share2, Eye, Calendar, Clock, CheckCircle } from 'lucide-react';
-import { MOCK_CERTIFICATES } from '@/lib/services/getDataseService';
-import type { Certificate } from '@/lib/types';
+import type { Certificate, UserStatsDTO } from '@/lib/types';
+import { transformCertificates } from '@/lib/services/dashboard.service';
 
-const Certificates: React.FC = () => {
-  const [certificates] = useState<Certificate[]>(MOCK_CERTIFICATES);
+interface CertificatesProps {
+  dashboardData: UserStatsDTO;
+}
 
+const Certificates: React.FC<CertificatesProps> = ({ dashboardData }) => {
+  const certificates = useMemo(() => transformCertificates(dashboardData.certificados), [dashboardData]);
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
 
   const getStatusBadge = (status: string) => {

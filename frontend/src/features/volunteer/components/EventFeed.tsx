@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import { Heart, MessageCircle, Share2, Bookmark, Calendar, MapPin, Bell, TrendingUp } from 'lucide-react';
-import { MOCK_FEED_ITEMS, MOCK_NOTIFICATIONS } from '@/lib/services/getDataseService';
-import type { FeedItem } from '@/lib/types';
+import { MOCK_FEED_ITEMS } from '@/lib/services/getDataseService';
+import type { FeedItem, UserStatsDTO } from '@/lib/types';
 
-const EventFeed: React.FC = () => {
+interface EventFeedProps {
+  dashboardData: UserStatsDTO;
+}
+
+const EventFeed: React.FC<EventFeedProps> = ({ dashboardData }) => {
   const [feedItems] = useState<FeedItem[]>(MOCK_FEED_ITEMS);
-  const [notifications] = useState(MOCK_NOTIFICATIONS);
+  const notifications = dashboardData.notifications;
 
   const handleLike = (id: number) => {
     console.log('Liked post:', id);
@@ -65,17 +69,17 @@ const EventFeed: React.FC = () => {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-3">
                   <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    {item.organization.charAt(0)}
+                    {item.author.charAt(0)}
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-800">{item.title}</h4>
-                    <p className="text-sm text-gray-600">por {item.organization}</p>
+                    <p className="text-sm text-gray-600">por {item.author}</p>
                   </div>
                 </div>
-                <span className="text-xs text-gray-500">{item.timePosted}</span>
+                <span className="text-xs text-gray-500">{item.date}</span>
               </div>
 
-              <p className="text-gray-700 mb-4">{item.description}</p>
+              <p className="text-gray-700 mb-4">{item.content}</p>
 
               {(item.eventDate || item.location) && (
                 <div className="flex space-x-6 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">

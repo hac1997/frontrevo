@@ -3,17 +3,15 @@ import { DUMMY_NEWS } from '@/lib/services/getDataseService';
 import { NewsArticle } from '@/lib/types';
 import { IoTimeOutline } from 'react-icons/io5';
 
-// Define a cor de fundo com base na categoria
-const getCategoryStyles = (category: NewsArticle['category']) => {
-  switch (category) {
-    case 'Tecnologia':
+// Define a cor de fundo com base no tipo
+const getCategoryStyles = (newsType: 'Announcement' | 'Event' | 'Conquest') => {
+  switch (newsType) {
+    case 'Announcement':
       return 'bg-green-100 text-green-700';
-    case 'Impacto':
+    case 'Event':
       return 'bg-blue-100 text-blue-700';
-    case 'Comunidade':
+    case 'Conquest':
       return 'bg-amber-100 text-amber-700';
-    case 'Voluntariado':
-      return 'bg-red-100 text-red-700';
     default:
       return 'bg-gray-100 text-gray-700';
   }
@@ -24,10 +22,10 @@ const ArticleCard: React.FC<{ article: NewsArticle }> = ({ article }) => (
     <div className="p-6 flex flex-col justify-between flex-grow">
       {/* Categoria e Data */}
       <div className="mb-4">
-        <span 
-          className={`text-xs font-semibold px-3 py-1 rounded-full ${getCategoryStyles(article.category)}`}
+        <span
+          className={`text-xs font-semibold px-3 py-1 rounded-full ${getCategoryStyles(article.newsType)}`}
         >
-          {article.category}
+          {article.newsType}
         </span>
       </div>
 
@@ -36,7 +34,7 @@ const ArticleCard: React.FC<{ article: NewsArticle }> = ({ article }) => (
       </h3>
 
       <p className="text-gray-600 mb-4 line-clamp-3">
-        {article.excerpt}
+        {article.body}
       </p>
 
       {/* Footer */}

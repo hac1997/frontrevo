@@ -5,18 +5,12 @@ import {
   VolunteerData,
   OrganizationData,
   FeedItem,
-  Notification,
-  MonthlyData,
-  CategoryStats,
-  Achievement,
-  Certificate,
   PastEvent,
   OpenEvent,
   ClosedEvent,
   RecentOrganizationEvent,
   EventParticipant,
   SearchVolunteer,
-  SearchEvent,
   OrganizationMonthlyData,
   OrganizationCategoryStats,
   TopVolunteer,
@@ -452,6 +446,44 @@ export const MOCK_RECENT_ORGANIZATION_EVENTS: RecentOrganizationEvent[] = [
 ];
 
 export const EVENT_CATEGORIES = ['Todas', 'Meio Ambiente', 'Educação', 'Saúde', 'Cultura', 'Esportes', 'Social'];
+
+export const SEARCH_LOCATIONS = ['Todas', 'São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Brasília', 'Curitiba'];
+
+export const MOCK_SEARCH_EVENTS = [
+  {
+    id: 1,
+    title: 'Limpeza da Praia de Copacabana',
+    organization: 'ONG Mar Limpo',
+    date: '15/11/2025',
+    location: 'Rio de Janeiro',
+    category: 'Meio Ambiente',
+    volunteers: 45,
+    maxVolunteers: 60,
+    description: 'Mutirão de limpeza das areias e conscientização ambiental'
+  },
+  {
+    id: 2,
+    title: 'Aula de Reforço para Crianças',
+    organization: 'Instituto Educar',
+    date: '20/11/2025',
+    location: 'São Paulo',
+    category: 'Educação',
+    volunteers: 12,
+    maxVolunteers: 20,
+    description: 'Apoio escolar em matemática e português para ensino fundamental'
+  },
+  {
+    id: 3,
+    title: 'Maratona Solidária 2025',
+    organization: 'Corrida pela Vida',
+    date: '25/11/2025',
+    location: 'São Paulo',
+    category: 'Esportes',
+    volunteers: 89,
+    maxVolunteers: 100,
+    description: 'Organização e apoio logístico da maratona beneficente'
+  }
+];
 
 export const MOCK_EVENT_PARTICIPANTS: EventParticipant[] = [
   {

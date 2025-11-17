@@ -13,8 +13,9 @@ import EventSearch from './EventSearch';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { StatCard } from '@/components/charts/StatCard';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { VolunteerData } from '@/lib/types';
-import {  getVolunteerStats } from '@/lib/services/user.service';
+import { VolunteerData, UserStatsDTO } from '@/lib/types';
+import { getVolunteerStats } from '@/lib/services/user.service';
+import { getUserDashboard } from '@/actions/dashboard';
 
 type ViewType = 'feed' | 'search' | 'profile' | 'statistics' | 'certificates' | 'past-events';
 
@@ -22,6 +23,7 @@ const VolunteerHome: React.FC = () => {
   const { user, logout, loading: authLoading } = useAuth();
   const [currentView, setCurrentView] = useState<ViewType>('feed');
   const [volunteerData, setVolunteerData] = useState<VolunteerData | null>(null);
+  const [dashboardData, setDashboardData] = useState<UserStatsDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,8 +37,12 @@ const VolunteerHome: React.FC = () => {
 
     try {
       setLoading(true);
-      const data = await getVolunteerStats(user.id);
+      const [data, dashboard] = await Promise.all([
+        getVolunteerStats(user.id),
+        getUserDashboard(user.id)
+      ]);
       setVolunteerData(data);
+      setDashboardData(dashboard);
     } catch (error) {
       console.error('Erro ao carregar dados do voluntário:', error);
     } finally {
@@ -54,7 +60,7 @@ const VolunteerHome: React.FC = () => {
   ];
 
   const renderContent = () => {
-    if (!volunteerData) {
+    if (!volunteerData || !dashboardData) {
       return (
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
@@ -67,19 +73,19 @@ const VolunteerHome: React.FC = () => {
 
     switch (currentView) {
       case 'feed':
-        return <EventFeed />;
+        return <EventFeed dashboardData={dashboardData} />;
       case 'search':
         return <EventSearch />;
       case 'profile':
         return <ProfileSettings volunteerData={volunteerData} />;
       case 'statistics':
-        return <Statistics volunteerData={volunteerData} />;
+        return <Statistics volunteerData={volunteerData} dashboardData={dashboardData} />;
       case 'certificates':
-        return <Certificates />;
+        return <Certificates dashboardData={dashboardData} />;
       case 'past-events':
-        return <PastEvents />;
+        return <PastEvents dashboardData={dashboardData} />;
       default:
-        return <EventFeed />;
+        return <EventFeed dashboardData={dashboardData} />;
     }
   };
 
@@ -94,7 +100,7 @@ const VolunteerHome: React.FC = () => {
     );
   }
 
-  if (!volunteerData) {
+  if (!volunteerData || !dashboardData) {
     return (
       <div className="min-h-screen bg-orange-50 flex items-center justify-center">
         <div className="text-center">

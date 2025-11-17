@@ -43,7 +43,7 @@ export function LoginForm() {
         </div>
 
         {/* FORMULÁRIO CHAMANDO A SERVER ACTION DIRETAMENTE */}
-        <form action={loginUser} method="POST" className="space-y-4">
+        <form action={loginUser as unknown as string} method="POST" className="space-y-4">
           <input type="hidden" name="role" value={selectedRole} />
 
           <InputField type="email" name="email" placeholder="Seu e-mail" required />

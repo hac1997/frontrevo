@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { TrendingUp, Calendar, Award, Users, Clock, Target, BarChart3 } from 'lucide-react';
-import { MOCK_MONTHLY_DATA, MOCK_CATEGORY_STATS, MOCK_ACHIEVEMENTS } from '@/lib/services/getDataseService';
+import { UserStatsDTO } from '@/lib/types';
+import { transformMonthlyActivities } from '@/lib/services/dashboard.service';
 
 interface StatisticsProps {
   volunteerData: {
@@ -10,14 +11,15 @@ interface StatisticsProps {
     hoursVolunteered: number;
     points: number;
   };
+  dashboardData: UserStatsDTO;
 }
 
-const Statistics: React.FC<StatisticsProps> = ({ volunteerData }) => {
+const Statistics: React.FC<StatisticsProps> = ({ volunteerData, dashboardData }) => {
   const [selectedPeriod, setSelectedPeriod] = useState('year');
 
-  const monthlyData = MOCK_MONTHLY_DATA;
-  const categoryStats = MOCK_CATEGORY_STATS;
-  const achievements = MOCK_ACHIEVEMENTS;
+  const monthlyData = transformMonthlyActivities(dashboardData.atividadesMensais);
+  const categoryStats = dashboardData.categoryStats;
+  const achievements = dashboardData.achievements;
 
   const maxHours = Math.max(...monthlyData.map(d => d.hours));
 

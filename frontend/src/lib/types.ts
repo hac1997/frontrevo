@@ -73,7 +73,7 @@ export interface UserStatsDTO {
     eventosPassados: Evento[];
     eventosCompletados: Evento[];
     avaliacaoMediaUsuario: number;
-    eventoDetalhes: any | null; 
+    eventoDetalhes: unknown | null; 
     totalEventosParticipados: number;
     totalHorasVoluntariadas: number;
     pontosAcumulados: number;
